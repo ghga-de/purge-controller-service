@@ -20,7 +20,7 @@ from ghga_service_chassis_lib.config import config_from_yaml
 from ghga_service_chassis_lib.api import ApiConfigBase
 
 
-@config_from_yaml(prefix="my-microservice")
+@config_from_yaml(prefix="my_microservice")
 class Config(ApiConfigBase):
     """Config parameters and their defaults."""
 
@@ -32,5 +32,5 @@ class Config(ApiConfigBase):
 
 @lru_cache
 def get_config():
-    """Get config parameter."""
+    """Get runtime configuration."""
     return Config()
