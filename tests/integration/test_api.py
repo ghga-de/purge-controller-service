@@ -13,25 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Config Parameter Modeling and Parsing"""
+"""Test the api module"""
 
-from functools import lru_cache
-from ghga_service_chassis_lib.config import config_from_yaml
-from ghga_service_chassis_lib.api import ApiConfigBase
-from .models import SupportedLanguages
-
-
-@config_from_yaml(prefix="my-microservice")
-class Config(ApiConfigBase):
-    """Config parameters and their defaults."""
-
-    # config parameter needed for the api server
-    # are inherited from ApiConfigBase
-
-    language: SupportedLanguages = "Croatian"
+from fastapi import status
+from fastapi.testclient import TestClient
+from my_microservice.api import app
 
 
-@lru_cache
-def get_config():
-    """Get runtime configuration."""
-    return Config()
+def test_index():
+    """Test the index endpoint"""
+
+    client = TestClient(app)
+    response = client.get("/")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.text == '"Hello World."'
+
+
+def test_greet():
+    """Test the greet endpoint"""
+
+    name = "Friendly Tester"
+
+    client = TestClient(app)
+    response = client.get(f"/greet/{name}")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert name in response.json()["message"]

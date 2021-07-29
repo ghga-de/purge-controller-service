@@ -13,25 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Config Parameter Modeling and Parsing"""
+"""Utils for Fixture handling"""
 
-from functools import lru_cache
-from ghga_service_chassis_lib.config import config_from_yaml
-from ghga_service_chassis_lib.api import ApiConfigBase
-from .models import SupportedLanguages
+import yaml
 
 
-@config_from_yaml(prefix="my-microservice")
-class Config(ApiConfigBase):
-    """Config parameters and their defaults."""
-
-    # config parameter needed for the api server
-    # are inherited from ApiConfigBase
-
-    language: SupportedLanguages = "Croatian"
-
-
-@lru_cache
-def get_config():
-    """Get runtime configuration."""
-    return Config()
+def read_yaml(path: str) -> dict:
+    """Read yaml file and return content as dict."""
+    with open(path, "r") as file_:
+        return yaml.safe_load(file_)
