@@ -20,12 +20,12 @@
 exists and that they are up to date.
 """
 
-import sys
 import argparse
 import re
+import sys
 from datetime import date
-from typing import List, Tuple
 from pathlib import Path
+from typing import List, Tuple
 
 # root directory of the package:
 ROOT_DIR = Path(__file__).parent.parent.resolve()
@@ -46,13 +46,11 @@ EXCLUDE = [
     "pip-wheel-metadata",
     ".git",
     ".github",
-    ".flake8",
     ".gitignore",
     ".pylintrc",
     "example-config.yaml",
     "LICENSE",  # is checked but not for the license header
     ".pre-commit-config.yaml",
-    "README.md",
     "docs",
     "requirements.txt",
     ".vscode",
@@ -63,7 +61,7 @@ EXCLUDE = [
 ]
 
 # exclude file by file ending from license header check:
-EXCLUDE_ENDINGS = ["json", "pyc", "yaml", "yml"]
+EXCLUDE_ENDINGS = ["json", "pyc", "yaml", "yml", "md"]
 
 # exclude any files with names that match any of the following regex:
 EXCLUDE_PATTERN = [r".*\.egg-info.*", r".*__cache__.*", r".*\.git.*"]

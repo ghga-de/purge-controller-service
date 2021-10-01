@@ -13,27 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Config Parameter Modeling and Parsing"""
+"""Consuming or Subscribing to Async Messaging Topics"""
 
-from functools import lru_cache
-
-from ghga_service_chassis_lib.api import ApiConfigBase
-from ghga_service_chassis_lib.config import config_from_yaml
-
-from .models import SupportedLanguages
-
-
-@config_from_yaml(prefix="my-microservice")
-class Config(ApiConfigBase):
-    """Config parameters and their defaults."""
-
-    # config parameter needed for the api server
-    # are inherited from ApiConfigBase
-
-    language: SupportedLanguages = "Croatian"
-
-
-@lru_cache
-def get_config():
-    """Get runtime configuration."""
-    return Config()
+# import pika
+# from ghga_service_chassis_lib.pubsub import AmqpTopic
+# from .config import get_config
