@@ -55,6 +55,11 @@ repos:
       - id: pylint
         args: [--disable=E0401]
         exclude: db_migration|tests|.devcontainer
+  - repo: https://github.com/PyCQA/flake8
+    rev: "3.9.2"
+    hooks:
+      - id: flake8
+        args: [--config, .flake8]
   - repo: https://github.com/PyCQA/bandit
     rev: "1.7.0"
     hooks:

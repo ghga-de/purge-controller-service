@@ -32,6 +32,9 @@ jobs:
       - name: pylint
         run: |
           pylint "${MAIN_SRC_DIR}"
+      - name: flake8
+        run: |
+          flake8 --config .flake8
       - name: bandit
         run: |
           bandit -r "${MAIN_SRC_DIR}"
