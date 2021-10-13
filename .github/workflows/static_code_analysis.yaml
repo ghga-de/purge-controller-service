@@ -20,28 +20,24 @@ jobs:
         run: |
           pip install ".[dev]"
       - uses: pre-commit/action@v2.0.3
+      - name: black
+        run: |
+          black --check .
+      - name: isort
+        run: |
+          isort --check --profile black .
       - name: mypy
         run: |
           mypy --show-error-codes --disable-error-code import .
       - name: pylint
         run: |
           pylint "${MAIN_SRC_DIR}"
-      - name: pytest
+      - name: flake8
         run: |
-          pytest
-      - name: black
-        run: |
-          black --check .
+          flake8 --config .flake8
       - name: bandit
         run: |
           bandit -r "${MAIN_SRC_DIR}"
       - name: Check license header and file
         run: |
           python3 ./.devcontainer/license_checker.py
-      - name: Check if openapi.yaml is up to date
-        run: |
-          # regenerate openapi.yaml
-          python3 ./.devcontainer/openapi_from_app.py > openapi_regenerated.yaml
-
-          # compare with existing yaml:
-          diff openapi_regenerated.yaml openapi.yaml
