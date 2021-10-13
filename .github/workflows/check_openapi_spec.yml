@@ -1,0 +1,20 @@
+# This file is only needed, if your repository uses FastAPI
+name: Check if openapi.yaml is up to date
+
+on: push
+
+env:
+  # Please adapt to package name
+  MAIN_SRC_DIR: ./my_microservice
+
+jobs:
+  static-code-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if openapi.yaml is up to date
+        run: |
+          # regenerate openapi.yaml
+          python3 ./.devcontainer/openapi_from_app.py > openapi_regenerated.yaml
+
+          # compare with existing yaml:
+          diff openapi_regenerated.yaml openapi.yaml
