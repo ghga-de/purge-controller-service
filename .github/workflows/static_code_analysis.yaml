@@ -20,24 +20,26 @@ jobs:
         run: |
           pip install ".[dev]"
       - uses: pre-commit/action@v2.0.3
+      - name: black
+        run: |
+          black --check .
+      - name: isort
+        run: |
+          isort --check --profile black .
       - name: mypy
         run: |
           mypy --show-error-codes --disable-error-code import .
       - name: pylint
         run: |
           pylint "${MAIN_SRC_DIR}"
-      - name: pytest
-        run: |
-          pytest
-      - name: black
-        run: |
-          black --check .
       - name: bandit
         run: |
           bandit -r "${MAIN_SRC_DIR}"
       - name: Check license header and file
         run: |
           python3 ./.devcontainer/license_checker.py
+
+      # This is only needed, if your repository uses FastAPI
       - name: Check if openapi.yaml is up to date
         run: |
           # regenerate openapi.yaml
