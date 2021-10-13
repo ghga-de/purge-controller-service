@@ -11,6 +11,14 @@ jobs:
   static-code-analysis:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install Dependencies
+        run: |
+          pip install ".[dev]"
       - name: Check if openapi.yaml is up to date
         run: |
           # regenerate openapi.yaml
