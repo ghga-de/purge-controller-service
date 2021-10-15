@@ -1,3 +1,7 @@
+![tests](https://github.com/ghga-de/ghga-service-chassis-lib/actions/workflows/unit_and_int_tests.yaml/badge.svg)
+[![codecov](https://codecov.io/gh/ghga-de/microservice-repository-template/branch/main/graph/badge.svg?token=GYH99Y71CK)](https://codecov.io/gh/ghga-de/microservice-repository-template)
+
+
 # Microservice Repository Template
 
 This repo is a template for creating a new microservice.
