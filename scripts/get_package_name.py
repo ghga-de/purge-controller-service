@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright 2021 Universität Tübingen, DKFZ and EMBL
 # for the German Human Genome-Phenome Archive (GHGA)
 #
@@ -13,18 +15,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Entrypoint of the package"""
+"""Extracts the package name from the setup.cfg"""
 
-from ghga_service_chassis_lib.api import run_server
+from pathlib import Path
 
-from .api.main import app  # noqa: F401 pylint: disable=unused-import
-from .config import get_config
+REPO_ROOT_DIR = Path(__file__).parent.parent.resolve()
+SETUP_CFG_PATH = REPO_ROOT_DIR / "setup.cfg"
+NAME_PREFIX = "name = "
 
 
 def run():
-    """Run the service"""
-    # Please adapt to package name
-    run_server(app="my_microservice.__main__:app", config=get_config())
+    """Extracts the package name"""
+
+    with open(SETUP_CFG_PATH, "r", encoding="utf8") as setup_cfg:
+        for line in setup_cfg.readlines():
+            line_stripped = line.strip()
+            if line_stripped.startswith(NAME_PREFIX):
+                package_name = line_stripped[len(NAME_PREFIX) :]
+                print(package_name)
+                return
 
 
 if __name__ == "__main__":
