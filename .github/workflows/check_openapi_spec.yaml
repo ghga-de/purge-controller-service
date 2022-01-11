@@ -8,15 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - name: Install Dependencies
-        run: |
-          pip install ".[dev]"
+
+      - id: common
+        uses: ghga-de/gh-action-common@v1
+
       - name: Check if openapi.yaml is up to date
         run: |
+          export ${{ steps.common.outputs.CONFIG_YAML_ENV_VAR_NAME }}="${{ steps.common.outputs.CONFIG_YAML }}"
+
           # regenerate openapi.yaml
           python3 ./scripts/openapi_from_app.py > openapi_regenerated.yaml
 

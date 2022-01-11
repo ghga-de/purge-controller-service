@@ -1,4 +1,4 @@
-# Copyright 2021 Universität Tübingen, DKFZ and EMBL
+# Copyright 2021 - 2022 Universität Tübingen, DKFZ and EMBL
 # for the German Human Genome-Phenome Archive (GHGA)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,12 +20,15 @@ Additional endpoints might be structured in dedicated modules
 """
 
 from fastapi import Depends, FastAPI
+from ghga_service_chassis_lib.api import configure_app
 
-from ..config import get_config
+from ..config import CONFIG
 from ..core.greeting import generate_greeting
 from ..models import Greeting
+from .deps import get_config
 
 app = FastAPI()
+configure_app(app, config=CONFIG)
 
 
 @app.get("/", summary="Greet the world")
