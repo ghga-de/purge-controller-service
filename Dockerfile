@@ -13,21 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.10.5-slim-bullseye
+FROM python:3.10.5-alpine3.16
 
 COPY . /service
 WORKDIR /service
 
-# install dependencies
-RUN apt update
-RUN apt install libpq-dev python-dev gcc -y
-RUN apt install libgnutls30
+# update and install dependencies
+RUN apk update && apk upgrade
+RUN apk add --no-cache gcc
+RUN apk add --update alpine-sdk
+
+# security patch toss busybox
+RUN apk upgrade busybox --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
+
 RUN pip install .
 
 # create new user and execute as that user
-RUN useradd --create-home appuser
-WORKDIR /home/appuser
+RUN addgroup -S appuser && adduser -S appuser -G appuser && chown -R appuser:appuser /service
 USER appuser
+WORKDIR /home/appuser
 
 ENV PYTHONUNBUFFERED=1
 
