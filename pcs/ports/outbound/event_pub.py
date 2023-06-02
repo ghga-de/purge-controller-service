@@ -13,9 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Test dummy."""
+"""Interface for broadcasting events to other services."""
+
+from abc import ABC, abstractmethod
 
 
-def test_dummy():
-    """Just makes the CI pass."""
-    assert True
+class EventPublisherPort(ABC):
+    """A port through which DRS-specific events are communicated with the outside."""
+
+    @abstractmethod
+    async def delete_file(self, *, file_id: str) -> None:
+        """Communicate the event that a file needs to be deleted."""

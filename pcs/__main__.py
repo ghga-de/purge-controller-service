@@ -13,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""FastAPI dependencies (used with the `Depends` feature)"""
+"""Entrypoint of the package"""
 
-from ..config import CONFIG
+from pcs.cli import cli
 
-
-def get_config():
-    """Get runtime configuration."""
-    return CONFIG
+if __name__ == "__main__":
+    cli()

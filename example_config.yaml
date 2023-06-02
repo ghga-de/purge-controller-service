@@ -5,10 +5,14 @@ cors_allowed_headers: null
 cors_allowed_methods: null
 cors_allowed_origins: null
 docs_url: /docs
+files_to_delete_topic: file_deletions
+files_to_delete_type: file_deletion_requested
 host: 127.0.0.1
-language: Greek
+kafka_servers:
+- kafka:9092
 log_level: info
 openapi_url: /openapi.json
 port: 8080
-service_name: my_microservice
+service_instance_id: '1'
+service_name: pcs
 workers: 1

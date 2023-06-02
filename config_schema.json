@@ -3,12 +3,61 @@
   "description": "Modifies the orginal Settings class provided by the user",
   "type": "object",
   "properties": {
+    "files_to_delete_topic": {
+      "title": "Files To Delete Topic",
+      "description": "The name of the topic to receive events informing about files to delete.",
+      "example": "file_deletions",
+      "env_names": [
+        "pcs_files_to_delete_topic"
+      ],
+      "type": "string"
+    },
+    "files_to_delete_type": {
+      "title": "Files To Delete Type",
+      "description": "The type used for events informing about a file to be deleted.",
+      "example": "file_deletion_requested",
+      "env_names": [
+        "pcs_files_to_delete_type"
+      ],
+      "type": "string"
+    },
+    "service_name": {
+      "title": "Service Name",
+      "default": "pcs",
+      "env_names": [
+        "pcs_service_name"
+      ],
+      "type": "string"
+    },
+    "service_instance_id": {
+      "title": "Service Instance Id",
+      "description": "A string that uniquely identifies this instance across all instances of this service. A globally unique Kafka client ID will be created by concatenating the service_name and the service_instance_id.",
+      "example": "germany-bw-instance-001",
+      "env_names": [
+        "pcs_service_instance_id"
+      ],
+      "type": "string"
+    },
+    "kafka_servers": {
+      "title": "Kafka Servers",
+      "description": "A list of connection strings to connect to Kafka bootstrap servers.",
+      "example": [
+        "localhost:9092"
+      ],
+      "env_names": [
+        "pcs_kafka_servers"
+      ],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "host": {
       "title": "Host",
       "description": "IP of the host.",
       "default": "127.0.0.1",
       "env_names": [
-        "my_microservice_host"
+        "pcs_host"
       ],
       "type": "string"
     },
@@ -17,7 +66,7 @@
       "description": "Port to expose the server on the specified host",
       "default": 8080,
       "env_names": [
-        "my_microservice_port"
+        "pcs_port"
       ],
       "type": "integer"
     },
@@ -26,7 +75,7 @@
       "description": "Controls the verbosity of the log.",
       "default": "info",
       "env_names": [
-        "my_microservice_log_level"
+        "pcs_log_level"
       ],
       "enum": [
         "critical",
@@ -43,7 +92,7 @@
       "description": "A development feature. Set to `True` to automatically reload the server upon code changes",
       "default": false,
       "env_names": [
-        "my_microservice_auto_reload"
+        "pcs_auto_reload"
       ],
       "type": "boolean"
     },
@@ -52,7 +101,7 @@
       "description": "Number of workers processes to run.",
       "default": 1,
       "env_names": [
-        "my_microservice_workers"
+        "pcs_workers"
       ],
       "type": "integer"
     },
@@ -61,7 +110,7 @@
       "description": "Root path at which the API is reachable. This is relative to the specified host and port.",
       "default": "/",
       "env_names": [
-        "my_microservice_api_root_path"
+        "pcs_api_root_path"
       ],
       "type": "string"
     },
@@ -70,7 +119,7 @@
       "description": "Path to get the openapi specification in JSON format. This is relative to the specified host and port.",
       "default": "/openapi.json",
       "env_names": [
-        "my_microservice_openapi_url"
+        "pcs_openapi_url"
       ],
       "type": "string"
     },
@@ -79,7 +128,7 @@
       "description": "Path to host the swagger documentation. This is relative to the specified host and port.",
       "default": "/docs",
       "env_names": [
-        "my_microservice_docs_url"
+        "pcs_docs_url"
       ],
       "type": "string"
     },
@@ -91,7 +140,7 @@
         "https://www.example.org"
       ],
       "env_names": [
-        "my_microservice_cors_allowed_origins"
+        "pcs_cors_allowed_origins"
       ],
       "type": "array",
       "items": {
@@ -106,7 +155,7 @@
         "https://www.example.org"
       ],
       "env_names": [
-        "my_microservice_cors_allow_credentials"
+        "pcs_cors_allow_credentials"
       ],
       "type": "boolean"
     },
@@ -117,7 +166,7 @@
         "*"
       ],
       "env_names": [
-        "my_microservice_cors_allowed_methods"
+        "pcs_cors_allowed_methods"
       ],
       "type": "array",
       "items": {
@@ -129,35 +178,19 @@
       "description": "A list of HTTP request headers that should be supported for cross-origin requests. Defaults to []. You can use ['*'] to allow all headers. The Accept, Accept-Language, Content-Language and Content-Type headers are always allowed for CORS requests.",
       "example": [],
       "env_names": [
-        "my_microservice_cors_allowed_headers"
+        "pcs_cors_allowed_headers"
       ],
       "type": "array",
       "items": {
         "type": "string"
       }
-    },
-    "service_name": {
-      "title": "Service Name",
-      "default": "my_microservice",
-      "env_names": [
-        "my_microservice_service_name"
-      ],
-      "type": "string"
-    },
-    "language": {
-      "title": "Language",
-      "default": "Croatian",
-      "env_names": [
-        "my_microservice_language"
-      ],
-      "enum": [
-        "Greek",
-        "Croatian",
-        "French",
-        "German"
-      ],
-      "type": "string"
     }
   },
+  "required": [
+    "files_to_delete_topic",
+    "files_to_delete_type",
+    "service_instance_id",
+    "kafka_servers"
+  ],
   "additionalProperties": false
 }

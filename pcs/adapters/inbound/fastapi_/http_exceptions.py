@@ -12,30 +12,24 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-
-"""Used to define the location of the main FastAPI app object."""
-
-# flake8: noqa
-# pylint: skip-file
-
-from typing import Any, Dict
-
-from fastapi import FastAPI
-
-from pcs.adapters.inbound.fastapi_.custom_openapi import get_openapi_schema
-from pcs.adapters.inbound.fastapi_.routes import router
-
-app = FastAPI()
-app.include_router(router)
 
 
-def custom_openapi() -> Dict[str, Any]:
-    if app.openapi_schema:
-        return app.openapi_schema
-    openapi_schema = get_openapi_schema(app)
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
+"""A collection of http exceptions."""
 
 
-app.openapi = custom_openapi  # type: ignore [assignment]
+from httpyexpect.server import HttpCustomExceptionBase
+
+
+class HttpAuthorizationFailedError(HttpCustomExceptionBase):
+    """Raised when bearer token cannot be validated"""
+
+    exception_id = "authorizationFailedError"
+
+    def __init__(self, *, status_code: int = 403):
+        """Construct message and init the exception."""
+
+        super().__init__(
+            status_code=status_code,
+            description="Endpoint file ID did not match file ID announced in work order token.",
+            data={},
+        )
