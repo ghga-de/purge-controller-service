@@ -17,7 +17,6 @@
 
 from hexkit.inject import ContainerBase, get_configurator, get_constructor
 from hexkit.providers.akafka import KafkaEventPublisher
-from hexkit.providers.mongodb import MongoDbDaoFactory
 
 from pcs.adapters.outbound.event_pub import EventPubTranslator
 from pcs.config import Config
@@ -30,7 +29,6 @@ class Container(ContainerBase):
     config = get_configurator(Config)
 
     # outbound providers:
-    dao_factory = get_constructor(MongoDbDaoFactory, config=config)
     event_pub_provider = get_constructor(KafkaEventPublisher, config=config)
 
     # outbound translators:
