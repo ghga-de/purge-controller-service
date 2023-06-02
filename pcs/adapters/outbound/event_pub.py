@@ -26,7 +26,7 @@ from pcs.ports.outbound.event_pub import EventPublisherPort
 
 
 class EventPubTranslatorConfig(BaseSettings):
-    """Config for publishing file download related events."""
+    """Config for publishing file deletion related events."""
 
     files_to_delete_topic: str = Field(
         ...,
@@ -63,6 +63,6 @@ class EventPubTranslator(EventPublisherPort):
         await self._provider.publish(
             payload=payload_dict,
             type_=self._config.files_to_delete_type,
-            topic=self._config.files_to_delete_type,
+            topic=self._config.files_to_delete_topic,
             key=file_id,
         )

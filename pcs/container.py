@@ -40,5 +40,4 @@ class Container(ContainerBase):
     file_deletion = get_constructor(
         FileDeletion,
         event_publisher=event_publisher,
-        config=config,
     )
