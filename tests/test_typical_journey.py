@@ -31,15 +31,17 @@ async def test_happy_journey(joint_fixture: JointFixture):  # noqa: 405, F811
     """Simulates a typical, successful API journey."""
     file_id = "test_id"
 
-    non_staged_requested_event = event_schemas.FileDeletionRequested(file_id=file_id)
+    files_deletion_event = event_schemas.FileDeletionRequested(file_id=file_id)
     async with joint_fixture.kafka.expect_events(
         events=[
             ExpectedEvent(
-                payload=json.loads(non_staged_requested_event.json()),
+                payload=json.loads(files_deletion_event.json()),
                 type_=joint_fixture.config.files_to_delete_type,
             )
         ],
         in_topic=joint_fixture.config.files_to_delete_topic,
     ):
-        response = await joint_fixture.rest_client.get(f"/files/{file_id}", timeout=5)
+        response = await joint_fixture.rest_client.delete(
+            f"/files/{file_id}", timeout=5
+        )
     assert response.status_code == status.HTTP_202_ACCEPTED
