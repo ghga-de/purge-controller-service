@@ -23,11 +23,11 @@ from fastapi import status
 from ghga_event_schemas import pydantic_ as event_schemas
 from hexkit.providers.akafka.testutils import ExpectedEvent
 
-from tests.fixtures.joint import JointFixture, joint_fixture  # noqa: F401
+from tests.fixtures.joint import *  # noqa: F403
 
 
 @pytest.mark.asyncio
-async def test_happy_journey(joint_fixture: JointFixture):  # noqa: F811
+async def test_happy_journey(joint_fixture: JointFixture):  # noqa: 405, F811
     """Simulates a typical, successful API journey."""
     file_id = "test_id"
 

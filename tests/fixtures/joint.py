@@ -21,12 +21,18 @@ from typing import AsyncGenerator
 import httpx
 import pytest_asyncio
 from ghga_service_commons.api.testing import AsyncTestClient
-from hexkit.providers.akafka.testutils import KafkaFixture, kafka_fixture  # noqa: F401
+from hexkit.providers.akafka.testutils import KafkaFixture, kafka_fixture
 
 from pcs.config import Config
 from pcs.container import Container
 from pcs.main import get_configured_container, get_rest_api
 from tests.fixtures.config import get_config
+
+__all__ = [
+    "joint_fixture",
+    "JointFixture",
+    "kafka_fixture",
+]
 
 
 @dataclass
@@ -55,7 +61,7 @@ async def joint_fixture(
     async with get_configured_container(config=config) as container:
         container.wire(
             modules=[
-                "dcs.adapters.inbound.fastapi_.routes",
+                "pcs.adapters.inbound.fastapi_.routes",
             ]
         )
 
