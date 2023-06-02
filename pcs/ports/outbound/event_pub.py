@@ -13,11 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""FastAPI dependencies (used with the `Depends` feature)"""
+"""Interface for broadcasting events to other services."""
 
-from ..config import CONFIG
+from abc import ABC, abstractmethod
 
 
-def get_config():
-    """Get runtime configuration."""
-    return CONFIG
+class EventPublisherPort(ABC):
+    """A port through which DRS-specific events are communicated with the outside."""
+
+    @abstractmethod
+    async def delete_file(self, *, file_id: str) -> None:
+        """Communicate the event that a file needs to be deleted."""

@@ -1,52 +1,43 @@
 
-[![tests](https://github.com/ghga-de/microservice-repository-template/actions/workflows/unit_and_int_tests.yaml/badge.svg)](https://github.com/ghga-de/microservice-repository-template/actions/workflows/unit_and_int_tests.yaml)
-[![Coverage Status](https://coveralls.io/repos/github/ghga-de/microservice-repository-template/badge.svg?branch=main)](https://coveralls.io/github/ghga-de/microservice-repository-template?branch=main)
+[![tests](https://github.com/ghga-de/purge-controller-service/actions/workflows/unit_and_int_tests.yaml/badge.svg)](https://github.com/ghga-de/purge-controller-service/actions/workflows/unit_and_int_tests.yaml)
+[![Coverage Status](https://coveralls.io/repos/github/ghga-de/purge-controller-service/badge.svg?branch=main)](https://coveralls.io/github/ghga-de/purge-controller-service?branch=main)
 
-# Microservice Repository Template
+# Purge Controller Service
 
-My-Microservice - a short description
+Purge Controller Service - a service to commission file deletions
 
 ## Description
 
 <!-- Please provide a short overview of the features of this service.-->
 
-This repo is a template for creating a new microservice.
+This service exposes an external API to commission file deletions from the whole
+file backend.
 
-The directories, files, and their structure herein are recommendations
-from the GHGA Dev Team.
+### API endpoints:
 
-### Naming Conventions
-The github repository contains only lowercase letters, numbers, and hyphens "-",
-e.g.: `my-microservice`
+#### `DELETE /files/{file_id}`:
 
-The python package (and thus the source repository) contains underscores "_"
-instead of hyphens, e.g.: `my_microservice`
-However, an abbreviated version is prefered as package name.
+This endpoint takes a file_id.
+It the commissions the deletion of the file with that id from the whole file backend.
+### Events published:
 
-### Adapt to your service
-This is just a template and needs some adaption to your specific use case.
-
-Please search for **"please adapt"** comments. They will indicate all locations
-that need modification. Once the adaptions are in place, please remove these #
-comments.
-
-Finally, follow the instructions to generate the README.md described in
-[`./readme_generation.md`](./readme_generation.md). Please also adapt this markdown file
-by providing an overview of the feature of the package.
+#### file_deletion_requested
+This event is published after a file deletion was requested via an API call.
+It contains the file_id of the file that should be deleted.
 
 
 ## Installation
 We recommend using the provided Docker container.
 
-A pre-build version is available at [docker hub](https://hub.docker.com/repository/docker/ghga/microservice-repository-template):
+A pre-build version is available at [docker hub](https://hub.docker.com/repository/docker/ghga/purge-controller-service):
 ```bash
-docker pull ghga/microservice-repository-template:0.1.0
+docker pull ghga/purge-controller-service:0.1.0
 ```
 
 Or you can build the container yourself from the [`./Dockerfile`](./Dockerfile):
 ```bash
 # Execute in the repo's root dir:
-docker build -t ghga/microservice-repository-template:0.1.0 .
+docker build -t ghga/purge-controller-service:0.1.0 .
 ```
 
 For production-ready deployment, we recommend using Kubernetes, however,
@@ -54,7 +45,7 @@ for simple use cases, you could execute the service using docker
 on a single server:
 ```bash
 # The entrypoint is preconfigured:
-docker run -p 8080:8080 ghga/microservice-repository-template:0.1.0 --help
+docker run -p 8080:8080 ghga/purge-controller-service:0.1.0 --help
 ```
 
 If you prefer not to use containers, you may install the service from source:
@@ -63,13 +54,25 @@ If you prefer not to use containers, you may install the service from source:
 pip install .
 
 # To run the service:
-my_microservice --help
+pcs --help
 ```
 
 ## Configuration
 ### Parameters
 
 The service requires the following configuration parameters:
+- **`files_to_delete_topic`** *(string)*: The name of the topic to receive events informing about files to delete.
+
+- **`files_to_delete_type`** *(string)*: The type used for events informing about a file to be deleted.
+
+- **`service_name`** *(string)*: Default: `pcs`.
+
+- **`service_instance_id`** *(string)*: A string that uniquely identifies this instance across all instances of this service. A globally unique Kafka client ID will be created by concatenating the service_name and the service_instance_id.
+
+- **`kafka_servers`** *(array)*: A list of connection strings to connect to Kafka bootstrap servers.
+
+  - **Items** *(string)*
+
 - **`host`** *(string)*: IP of the host. Default: `127.0.0.1`.
 
 - **`port`** *(integer)*: Port to expose the server on the specified host. Default: `8080`.
@@ -100,18 +103,14 @@ The service requires the following configuration parameters:
 
   - **Items** *(string)*
 
-- **`service_name`** *(string)*: Default: `my_microservice`.
-
-- **`language`** *(string)*: Must be one of: `['Greek', 'Croatian', 'French', 'German']`. Default: `Croatian`.
-
 
 ### Usage:
 
 A template YAML for configurating the service can be found at
 [`./example-config.yaml`](./example-config.yaml).
-Please adapt it, rename it to `.my_microservice.yaml`, and place it into one of the following locations:
-- in the current working directory were you are execute the service (on unix: `./.my_microservice.yaml`)
-- in your home directory (on unix: `~/.my_microservice.yaml`)
+Please adapt it, rename it to `.pcs.yaml`, and place it into one of the following locations:
+- in the current working directory were you are execute the service (on unix: `./.pcs.yaml`)
+- in your home directory (on unix: `~/.pcs.yaml`)
 
 The config yaml will be automatically parsed by the service.
 
@@ -120,8 +119,8 @@ The config yaml will be automatically parsed by the service.
 All parameters mentioned in the [`./example-config.yaml`](./example-config.yaml)
 could also be set using environment variables or file secrets.
 
-For naming the environment variables, just prefix the parameter name with `my_microservice_`,
-e.g. for the `host` set an environment variable named `my_microservice_host`
+For naming the environment variables, just prefix the parameter name with `pcs_`,
+e.g. for the `host` set an environment variable named `pcs_host`
 (you may use both upper or lower cases, however, it is standard to define all env
 variables in upper cases).
 

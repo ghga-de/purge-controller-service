@@ -13,4 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Subpackage defining a RESTful API"""
+"""Interface for managing and accessing DRS objects."""
+
+from abc import ABC, abstractmethod
+
+
+class FileDeletionPort(ABC):
+    """A service that commissions file deletions."""
+
+    @abstractmethod
+    async def delete_file(self, *, file_id: str) -> None:
+        """Sends out an event to delete all occurrences of a certain file.
+
+        Args:
+            file_id: id for the file to delete.
+        """
+        ...

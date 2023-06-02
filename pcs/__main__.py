@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Short description of package"""  # Please adapt to package
+"""Entrypoint of the package"""
 
-__version__ = "0.1.0"
+from pcs.cli import cli
+
+if __name__ == "__main__":
+    cli()

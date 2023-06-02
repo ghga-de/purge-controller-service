@@ -12,30 +12,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-"""Used to define the location of the main FastAPI app object."""
+"""Config Parameter Modeling and Parsing"""
 
-# flake8: noqa
-# pylint: skip-file
+from ghga_service_commons.api import ApiConfigBase
+from hexkit.config import config_from_yaml
+from hexkit.providers.akafka import KafkaConfig
 
-from typing import Any, Dict
-
-from fastapi import FastAPI
-
-from pcs.adapters.inbound.fastapi_.custom_openapi import get_openapi_schema
-from pcs.adapters.inbound.fastapi_.routes import router
-
-app = FastAPI()
-app.include_router(router)
+from pcs.adapters.outbound.event_pub import EventPubTranslatorConfig
 
 
-def custom_openapi() -> Dict[str, Any]:
-    if app.openapi_schema:
-        return app.openapi_schema
-    openapi_schema = get_openapi_schema(app)
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
+@config_from_yaml(prefix="pcs")
+class Config(
+    ApiConfigBase,
+    KafkaConfig,
+    EventPubTranslatorConfig,
+):
+    """Config parameters and their defaults."""
 
-
-app.openapi = custom_openapi  # type: ignore [assignment]
+    service_name: str = "pcs"

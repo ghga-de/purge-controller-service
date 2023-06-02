@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-This sub-package contains the main business functionality of this service.
-It should not contain any service API-related code.
-"""
+"""This service exposes an external API to commission file deletions from the whole
+file backend."""
+
+__version__ = "0.1.0"
