@@ -19,7 +19,7 @@ import asyncio
 
 import typer
 
-from pcs.main import consume_events, run_rest
+from pcs.main import run_rest
 
 cli = typer.Typer()
 
@@ -29,10 +29,3 @@ def sync_run_api():
     """Run the HTTP REST API."""
 
     asyncio.run(run_rest())
-
-
-@cli.command(name="consume-events")
-def sync_consume_events(run_forever: bool = True):
-    """Run an event consumer listening to the specified topic."""
-
-    asyncio.run(consume_events(run_forever=run_forever))
