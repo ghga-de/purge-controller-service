@@ -59,6 +59,10 @@ components:
       - type
       title: ValidationError
       type: object
+  securitySchemes:
+    HTTPBearer:
+      scheme: bearer
+      type: http
 info:
   description: A service exposing an external API to commission file deletionsfrom
     the wholefile backend.
@@ -99,6 +103,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
           description: Validation Error
+      security:
+      - HTTPBearer: []
       summary: Deletes the corresponding file.
       tags:
       - PurgeControllerService
