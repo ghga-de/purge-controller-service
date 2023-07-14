@@ -21,7 +21,9 @@ from typing import AsyncGenerator
 import httpx
 import pytest_asyncio
 from ghga_service_commons.api.testing import AsyncTestClient
+from ghga_service_commons.utils.simple_token import generate_token_and_hash
 from hexkit.providers.akafka.testutils import KafkaFixture, kafka_fixture
+from pydantic import BaseSettings
 
 from pcs.config import Config
 from pcs.container import Container
@@ -43,6 +45,7 @@ class JointFixture:
     container: Container
     rest_client: httpx.AsyncClient
     kafka: KafkaFixture
+    token: str
 
 
 @pytest_asyncio.fixture
@@ -51,11 +54,12 @@ async def joint_fixture(
 ) -> AsyncGenerator[JointFixture, None]:
     """A fixture that embeds all other fixtures for API-level integration testing"""
 
-    config = get_config(
-        sources=[
-            kafka_fixture.config,
-        ]
-    )
+    token, hash = generate_token_and_hash()
+
+    class TokenConfig(BaseSettings):
+        token_hashes = [hash]
+
+    config = get_config(sources=[kafka_fixture.config, TokenConfig()])
 
     # create a DI container instance:translators
     async with get_configured_container(config=config) as container:
@@ -74,4 +78,5 @@ async def joint_fixture(
                 container=container,
                 kafka=kafka_fixture,
                 rest_client=rest_client,
+                token=token,
             )

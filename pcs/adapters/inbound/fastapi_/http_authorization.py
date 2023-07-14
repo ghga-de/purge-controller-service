@@ -26,7 +26,7 @@ from pydantic import BaseModel, Field
 from pcs.config import Config
 from pcs.container import Container
 
-__all__ = ["require_token"]
+__all__ = ["require_token", "TokenAuthContext"]
 
 
 class TokenAuthContext(BaseModel):

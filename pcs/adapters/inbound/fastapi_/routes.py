@@ -20,6 +20,10 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, status
 
 from pcs.adapters.inbound.fastapi_ import http_exceptions
+from pcs.adapters.inbound.fastapi_.http_authorization import (
+    TokenAuthContext,
+    require_token,
+)
 from pcs.container import Container
 from pcs.ports.inbound.file_deletion import FileDeletionPort
 
@@ -65,6 +69,7 @@ async def health():
 async def delete_file(  # noqa: C901
     file_id: str,
     file_deletion: FileDeletionPort = Depends(Provide[Container.file_deletion]),
+    _token: TokenAuthContext = require_token,
 ):
     """
     Send out an event to delete the file with the given id.
