@@ -64,6 +64,11 @@ async def run_rest():
     config = Config()
 
     async with get_configured_container(config=config) as container:
-        container.wire(modules=["pcs.adapters.inbound.fastapi_.routes"])
+        container.wire(
+            modules=[
+                "pcs.adapters.inbound.fastapi_.http_authorization",
+                "pcs.adapters.inbound.fastapi_.routes",
+            ]
+        )
         api = get_rest_api(config=config)
         await run_server(app=api, config=config)

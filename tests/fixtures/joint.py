@@ -61,6 +61,7 @@ async def joint_fixture(
     async with get_configured_container(config=config) as container:
         container.wire(
             modules=[
+                "pcs.adapters.inbound.fastapi_.http_authorization",
                 "pcs.adapters.inbound.fastapi_.routes",
             ]
         )
