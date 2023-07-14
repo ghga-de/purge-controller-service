@@ -16,3 +16,5 @@ port: 8080
 service_instance_id: "1"
 service_name: pcs
 workers: 1
+
+token_hashes: [abcdef, ghijkl]

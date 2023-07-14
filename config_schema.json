@@ -184,13 +184,25 @@
       "items": {
         "type": "string"
       }
+    },
+    "token_hashes": {
+      "title": "Token Hashes",
+      "description": "List of token hashes corresponding to the tokens that can be used to authenticate calls to this service.",
+      "env_names": [
+        "pcs_token_hashes"
+      ],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [
     "files_to_delete_topic",
     "files_to_delete_type",
     "service_instance_id",
-    "kafka_servers"
+    "kafka_servers",
+    "token_hashes"
   ],
   "additionalProperties": false
 }

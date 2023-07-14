@@ -12,28 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-"""Config Parameter Modeling and Parsing"""
-
-from ghga_service_commons.api import ApiConfigBase
-from hexkit.config import config_from_yaml
-from hexkit.providers.akafka import KafkaConfig
-from pydantic import Field
-
-from pcs.adapters.outbound.event_pub import EventPubTranslatorConfig
-
-
-@config_from_yaml(prefix="pcs")
-class Config(
-    ApiConfigBase,
-    KafkaConfig,
-    EventPubTranslatorConfig,
-):
-    """Config parameters and their defaults."""
-
-    service_name: str = "pcs"
-    token_hashes: list[str] = Field(
-        ...,
-        description="List of token hashes corresponding to the tokens that can be used "
-        + "to authenticate calls to this service.",
-    )
+"""Scripts and utils used during development or in CI pipelines."""

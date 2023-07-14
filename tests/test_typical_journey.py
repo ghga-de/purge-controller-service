@@ -22,6 +22,7 @@ import pytest
 from fastapi import status
 from ghga_event_schemas import pydantic_ as event_schemas
 from hexkit.providers.akafka.testutils import ExpectedEvent
+from httpx import Headers
 
 from tests.fixtures.joint import *  # noqa: F403
 
@@ -41,7 +42,8 @@ async def test_happy_journey(joint_fixture: JointFixture):  # noqa: 405, F811
         ],
         in_topic=joint_fixture.config.files_to_delete_topic,
     ):
+        headers = Headers({"Authorization": f"Bearer {joint_fixture.token}"})
         response = await joint_fixture.rest_client.delete(
-            f"/files/{file_id}", timeout=5
+            f"/files/{file_id}", headers=headers, timeout=5
         )
     assert response.status_code == status.HTTP_202_ACCEPTED

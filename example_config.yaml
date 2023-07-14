@@ -15,4 +15,7 @@ openapi_url: /openapi.json
 port: 8080
 service_instance_id: '1'
 service_name: pcs
+token_hashes:
+- abcdef
+- ghijkl
 workers: 1
