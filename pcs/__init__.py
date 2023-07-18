@@ -16,4 +16,4 @@
 """This service exposes an external API to commission file deletions from the whole
 file backend."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
