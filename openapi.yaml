@@ -34,6 +34,7 @@ components:
     HttpAuthorizationFailedErrorData:
       description: 'An empty model used as default for describing exception data.
 
+
         Please overwrite this to define your own data model.'
       properties: {}
       title: HttpAuthorizationFailedErrorData
@@ -67,7 +68,7 @@ info:
   description: A service exposing an external API to commission file deletionsfrom
     the wholefile backend.
   title: Purge Controller Service
-  version: 0.2.0
+  version: 0.2.1
 openapi: 3.0.2
 paths:
   /files/{file_id}:
