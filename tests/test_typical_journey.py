@@ -28,7 +28,7 @@ from tests.fixtures.joint import *  # noqa: F403
 
 
 @pytest.mark.asyncio
-async def test_journey(joint_fixture: JointFixture):  # noqa: 405, F811
+async def test_journey(joint_fixture: JointFixture):  # noqa: F405
     """Simulates a typical, successful API journey."""
     file_id = "test_id"
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # Copyright 2021 - 2023 Universität Tübingen, DKFZ, EMBL, and Universität zu Köln
 # for the German Human Genome-Phenome Archive (GHGA)
 #
@@ -15,9 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Setup script for pip. This setup configs are specified in the `setup.cfg` file"""
+"""Utils to customize openAPI script"""
+from typing import Any
 
-import setuptools
+from fastapi.openapi.utils import get_openapi
 
-if __name__ == "__main__":
-    setuptools.setup()
+from pcs import __version__
+from pcs.config import Config
+
+config = Config()
+
+
+def get_openapi_schema(api) -> dict[str, Any]:
+    """Generates a custom openapi schema for the service"""
+    return get_openapi(
+        title="Purge Controller Service",
+        version=__version__,
+        description="A service exposing an external API to commission file deletions"
+        + "from the wholefile backend.",
+        servers=[{"url": config.api_root_path}],
+        tags=[{"name": "PurgeControllerService"}],
+        routes=api.routes,
+    )

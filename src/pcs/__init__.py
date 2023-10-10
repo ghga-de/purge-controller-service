@@ -13,28 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Utils to customize openAPI script
-"""
-from typing import Any, Dict
+"""This service exposes an external API to commission file deletions from the whole
+file backend."""
 
-from fastapi.openapi.utils import get_openapi
+from importlib.metadata import version
 
-from pcs import __version__
-from pcs.config import Config
-
-config = Config()
-
-
-def get_openapi_schema(api) -> Dict[str, Any]:
-    """Generates a custom openapi schema for the service"""
-
-    return get_openapi(
-        title="Purge Controller Service",
-        version=__version__,
-        description="A service exposing an external API to commission file deletions"
-        + "from the wholefile backend.",
-        servers=[{"url": config.api_root_path}],
-        tags=[{"name": "PurgeControllerService"}],
-        routes=api.routes,
-    )
+__version__ = version(__package__)

@@ -15,8 +15,8 @@
 #
 """Join the functionality of all fixtures for API-level integration testing."""
 
+from collections.abc import AsyncGenerator
 from dataclasses import dataclass
-from typing import AsyncGenerator
 
 import httpx
 import pytest_asyncio
@@ -50,10 +50,9 @@ class JointFixture:
 
 @pytest_asyncio.fixture
 async def joint_fixture(
-    kafka_fixture: KafkaFixture,  # noqa: F811
+    kafka_fixture: KafkaFixture,
 ) -> AsyncGenerator[JointFixture, None]:
     """A fixture that embeds all other fixtures for API-level integration testing"""
-
     token, hash = generate_token_and_hash()
 
     class TokenConfig(BaseSettings):

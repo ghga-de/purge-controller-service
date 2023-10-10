@@ -12,9 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-Module containing the main FastAPI router and all route functions.
-"""
+"""Module containing the main FastAPI router and all route functions."""
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, status
@@ -50,7 +48,6 @@ RESPONSES = {
 )
 async def health():
     """Used to test if this service is alive"""
-
     return {"status": "OK"}
 
 
@@ -66,15 +63,12 @@ async def health():
     },
 )
 @inject
-async def delete_file(  # noqa: C901
+async def delete_file(
     file_id: str,
     file_deletion: FileDeletionPort = Depends(Provide[Container.file_deletion]),
     _token: TokenAuthContext = require_token,
 ):
-    """
-    Send out an event to delete the file with the given id.
-    """
-
+    """Send out an event to delete the file with the given id."""
     # Need to introduce authentication here
     # raise http_exceptions.HttpAuthorizationFailedError()
 
