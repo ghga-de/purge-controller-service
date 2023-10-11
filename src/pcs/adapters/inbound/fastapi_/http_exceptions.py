@@ -13,19 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Entrypoint of the package"""
 
-import asyncio
-
-import typer
-
-from pcs.main import run_rest
-
-cli = typer.Typer()
+"""A collection of http exceptions."""
 
 
-@cli.command(name="run-rest")
-def sync_run_api():
-    """Run the HTTP REST API."""
+from ghga_service_commons.httpyexpect.server import HttpCustomExceptionBase
 
-    asyncio.run(run_rest())
+
+class HttpAuthorizationFailedError(HttpCustomExceptionBase):
+    """Raised when bearer token cannot be validated"""
+
+    exception_id = "authorizationFailedError"
+
+    def __init__(self, *, status_code: int = 403):
+        """Construct message and init the exception."""
+        super().__init__(
+            status_code=status_code,
+            description="Endpoint file ID did not match file ID announced in work order token.",
+            data={},
+        )

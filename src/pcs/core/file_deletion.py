@@ -28,7 +28,6 @@ class FileDeletion(FileDeletionPort):
         event_publisher: EventPublisherPort,
     ):
         """Initialize with outbound adapters."""
-
         self._event_publisher = event_publisher
 
     async def delete_file(self, *, file_id: str) -> None:
@@ -37,5 +36,4 @@ class FileDeletion(FileDeletionPort):
         Args:
             file_id: id for the file to delete.
         """
-
         await self._event_publisher.delete_file(file_id=file_id)

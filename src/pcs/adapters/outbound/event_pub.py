@@ -42,19 +42,18 @@ class EventPubTranslatorConfig(BaseSettings):
 
 class EventPubTranslator(EventPublisherPort):
     """A translator according to  the triple hexagonal architecture implementing
-    the EventPublisherPort."""
+    the EventPublisherPort.
+    """
 
     def __init__(
         self, *, config: EventPubTranslatorConfig, provider: EventPublisherProtocol
     ):
         """Initialize with configs and a provider of the EventPublisherProtocol."""
-
         self._config = config
         self._provider = provider
 
     async def delete_file(self, *, file_id: str) -> None:
         """Communicate the event that a file needs to be deleted."""
-
         payload = event_schemas.FileDeletionRequested(
             file_id=file_id,
         )

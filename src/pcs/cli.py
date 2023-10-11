@@ -13,7 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This service exposes an external API to commission file deletions from the whole
-file backend."""
+"""Entrypoint of the package"""
 
-__version__ = "0.2.0"
+import asyncio
+
+import typer
+
+from pcs.main import run_rest
+
+cli = typer.Typer()
+
+
+@cli.command(name="run-rest")
+def sync_run_api():
+    """Run the HTTP REST API."""
+    asyncio.run(run_rest())
