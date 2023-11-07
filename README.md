@@ -63,17 +63,55 @@ pcs --help
 ### Parameters
 
 The service requires the following configuration parameters:
+- **`token_hashes`** *(array)*: List of token hashes corresponding to the tokens that can be used to authenticate calls to this service.
+
+  - **Items** *(string)*
+
 - **`files_to_delete_topic`** *(string)*: The name of the topic to receive events informing about files to delete.
 
+
+  Examples:
+
+  ```json
+  "file_deletions"
+  ```
+
+
 - **`files_to_delete_type`** *(string)*: The type used for events informing about a file to be deleted.
+
+
+  Examples:
+
+  ```json
+  "file_deletion_requested"
+  ```
+
 
 - **`service_name`** *(string)*: Default: `"pcs"`.
 
 - **`service_instance_id`** *(string)*: A string that uniquely identifies this instance across all instances of this service. A globally unique Kafka client ID will be created by concatenating the service_name and the service_instance_id.
 
+
+  Examples:
+
+  ```json
+  "germany-bw-instance-001"
+  ```
+
+
 - **`kafka_servers`** *(array)*: A list of connection strings to connect to Kafka bootstrap servers.
 
   - **Items** *(string)*
+
+
+  Examples:
+
+  ```json
+  [
+      "localhost:9092"
+  ]
+  ```
+
 
 - **`host`** *(string)*: IP of the host. Default: `"127.0.0.1"`.
 
@@ -91,23 +129,83 @@ The service requires the following configuration parameters:
 
 - **`docs_url`** *(string)*: Path to host the swagger documentation. This is relative to the specified host and port. Default: `"/docs"`.
 
-- **`cors_allowed_origins`** *(array)*: A list of origins that should be permitted to make cross-origin requests. By default, cross-origin requests are not allowed. You can use ['*'] to allow any origin.
+- **`cors_allowed_origins`**: A list of origins that should be permitted to make cross-origin requests. By default, cross-origin requests are not allowed. You can use ['*'] to allow any origin. Default: `null`.
 
-  - **Items** *(string)*
+  - **Any of**
 
-- **`cors_allow_credentials`** *(boolean)*: Indicate that cookies should be supported for cross-origin requests. Defaults to False. Also, cors_allowed_origins cannot be set to ['*'] for credentials to be allowed. The origins must be explicitly specified.
+    - *array*
 
-- **`cors_allowed_methods`** *(array)*: A list of HTTP methods that should be allowed for cross-origin requests. Defaults to ['GET']. You can use ['*'] to allow all standard methods.
+      - **Items** *(string)*
 
-  - **Items** *(string)*
+    - *null*
 
-- **`cors_allowed_headers`** *(array)*: A list of HTTP request headers that should be supported for cross-origin requests. Defaults to []. You can use ['*'] to allow all headers. The Accept, Accept-Language, Content-Language and Content-Type headers are always allowed for CORS requests.
 
-  - **Items** *(string)*
+  Examples:
 
-- **`token_hashes`** *(array)*: List of token hashes corresponding to the tokens that can be used to authenticate calls to this service.
+  ```json
+  [
+      "https://example.org",
+      "https://www.example.org"
+  ]
+  ```
 
-  - **Items** *(string)*
+
+- **`cors_allow_credentials`**: Indicate that cookies should be supported for cross-origin requests. Defaults to False. Also, cors_allowed_origins cannot be set to ['*'] for credentials to be allowed. The origins must be explicitly specified. Default: `null`.
+
+  - **Any of**
+
+    - *boolean*
+
+    - *null*
+
+
+  Examples:
+
+  ```json
+  [
+      "https://example.org",
+      "https://www.example.org"
+  ]
+  ```
+
+
+- **`cors_allowed_methods`**: A list of HTTP methods that should be allowed for cross-origin requests. Defaults to ['GET']. You can use ['*'] to allow all standard methods. Default: `null`.
+
+  - **Any of**
+
+    - *array*
+
+      - **Items** *(string)*
+
+    - *null*
+
+
+  Examples:
+
+  ```json
+  [
+      "*"
+  ]
+  ```
+
+
+- **`cors_allowed_headers`**: A list of HTTP request headers that should be supported for cross-origin requests. Defaults to []. You can use ['*'] to allow all headers. The Accept, Accept-Language, Content-Language and Content-Type headers are always allowed for CORS requests. Default: `null`.
+
+  - **Any of**
+
+    - *array*
+
+      - **Items** *(string)*
+
+    - *null*
+
+
+  Examples:
+
+  ```json
+  []
+  ```
+
 
 
 ### Usage:
