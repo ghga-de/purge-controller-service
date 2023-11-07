@@ -14,16 +14,15 @@
 # limitations under the License.
 """Module containing the main FastAPI router and all route functions."""
 
-from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, status
+from typing import Annotated
 
-from pcs.adapters.inbound.fastapi_ import http_exceptions
+from fastapi import APIRouter, status
+
+from pcs.adapters.inbound.fastapi_ import dummies, http_exceptions
 from pcs.adapters.inbound.fastapi_.http_authorization import (
     TokenAuthContext,
     require_token,
 )
-from pcs.container import Container
-from pcs.ports.inbound.file_deletion import FileDeletionPort
 
 router = APIRouter()
 
@@ -62,11 +61,10 @@ async def health():
         status.HTTP_403_FORBIDDEN: RESPONSES["authorizationFailedError"],
     },
 )
-@inject
 async def delete_file(
     file_id: str,
-    file_deletion: FileDeletionPort = Depends(Provide[Container.file_deletion]),
-    _token: TokenAuthContext = require_token,
+    file_deletion: dummies.FileDeletionDummy,
+    _token: Annotated[TokenAuthContext, require_token],
 ):
     """Send out an event to delete the file with the given id."""
     # Need to introduce authentication here

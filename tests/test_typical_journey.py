@@ -36,7 +36,7 @@ async def test_journey(joint_fixture: JointFixture):  # noqa: F405
     async with joint_fixture.kafka.expect_events(
         events=[
             ExpectedEvent(
-                payload=json.loads(files_deletion_event.json()),
+                payload=json.loads(files_deletion_event.model_dump_json()),
                 type_=joint_fixture.config.files_to_delete_type,
             )
         ],

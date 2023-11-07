@@ -19,12 +19,12 @@ import asyncio
 
 import typer
 
-from pcs.main import run_rest
+from pcs.main import run_rest_app
 
 cli = typer.Typer()
 
 
 @cli.command(name="run-rest")
-def sync_run_api():
+def sync_run_rest_app():
     """Run the HTTP REST API."""
-    asyncio.run(run_rest())
+    asyncio.run(run_rest_app())

@@ -12,26 +12,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-"""Utils to customize openAPI script"""
-from typing import Any
+"""A collection of dependency dummies that are used in view definitions but need to be
+replaced at runtime by actual dependencies.
+"""
 
-from fastapi.openapi.utils import get_openapi
+from typing import Annotated
 
-from pcs import __version__
-from pcs.config import Config
+from fastapi import Depends
+from ghga_service_commons.api.di import DependencyDummy
 
-config = Config()  # type: ignore [call-arg]
+from pcs.adapters.inbound.fastapi_.config import TokenHashConfig
+from pcs.ports.inbound.file_deletion import FileDeletionPort
 
+file_deletion = DependencyDummy("file_deletion")
+token_hash_config = DependencyDummy("token_hash_config")
 
-def get_openapi_schema(api) -> dict[str, Any]:
-    """Generates a custom openapi schema for the service"""
-    return get_openapi(
-        title="Purge Controller Service",
-        version=__version__,
-        description="A service exposing an external API to commission file deletions"
-        + "from the wholefile backend.",
-        servers=[{"url": config.api_root_path}],
-        tags=[{"name": "PurgeControllerService"}],
-        routes=api.routes,
-    )
+FileDeletionDummy = Annotated[FileDeletionPort, Depends(file_deletion)]
+TokenHashConfigDummy = Annotated[TokenHashConfig, Depends(token_hash_config)]

@@ -15,7 +15,6 @@
 #
 """Authorization specific code for FastAPI"""
 
-from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from ghga_service_commons.auth.context import AuthContextProtocol
@@ -23,8 +22,7 @@ from ghga_service_commons.auth.policies import require_auth_context_using_creden
 from ghga_service_commons.utils.simple_token import check_token
 from pydantic import BaseModel, Field
 
-from pcs.config import Config
-from pcs.container import Container
+from pcs.adapters.inbound.fastapi_ import dummies
 
 __all__ = ["require_token", "TokenAuthContext"]
 
@@ -52,9 +50,8 @@ class TokenAuthProvider(AuthContextProtocol[TokenAuthContext]):
         return TokenAuthContext(token=token)
 
 
-@inject
 async def require_token_context(
-    service_config: Config = Depends(Provide[Container.config]),
+    service_config: dummies.TokenHashConfigDummy,
     credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=True)),
 ) -> TokenAuthContext:
     """Require a VIP authentication and authorization context using FastAPI."""
