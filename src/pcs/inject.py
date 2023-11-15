@@ -63,7 +63,7 @@ async def prepare_rest_app(
 ) -> AsyncGenerator[FastAPI, None]:
     """Construct and initialize an REST API app along with all its dependencies.
     By default, the core dependencies are automatically prepared but you can also
-    provide them using the data_repo_override parameter.
+    provide them using the core_override parameter.
     """
     app = get_configured_app(config=config)
 
