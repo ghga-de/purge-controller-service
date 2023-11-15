@@ -43,14 +43,14 @@ async def prepare_core(*, config: Config) -> AsyncGenerator[FileDeletionPort, No
 def prepare_core_with_override(
     *,
     config: Config,
-    core_overwrite: Optional[FileDeletionPort] = None,
+    core_override: Optional[FileDeletionPort] = None,
 ):
     """Return a context manager for preparing the core that can be overwritten
     with the given value.
     """
     return (
-        asyncnullcontext(core_overwrite)
-        if core_overwrite
+        asyncnullcontext(core_override)
+        if core_override
         else prepare_core(config=config)
     )
 
@@ -68,7 +68,7 @@ async def prepare_rest_app(
     app = get_configured_app(config=config)
 
     async with prepare_core_with_override(
-        config=config, core_overwrite=core_overwrite
+        config=config, core_override=core_override
     ) as file_deletion:
         app.dependency_overrides[dummies.token_hash_config] = lambda: config
         app.dependency_overrides[dummies.file_deletion] = lambda: file_deletion
