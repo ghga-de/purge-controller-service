@@ -59,7 +59,7 @@ def prepare_core_with_override(
 async def prepare_rest_app(
     *,
     config: Config,
-    core_overwrite: Optional[FileDeletionPort] = None,
+    core_override: Optional[FileDeletionPort] = None,
 ) -> AsyncGenerator[FastAPI, None]:
     """Construct and initialize an REST API app along with all its dependencies.
     By default, the core dependencies are automatically prepared but you can also
