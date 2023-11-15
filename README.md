@@ -1,5 +1,5 @@
 
-[![tests](https://github.com/ghga-de/purge-controller-service/actions/workflows/tests.yaml/badge.svg)](https://github.com/ghga-de/purge-controller-service/actions/workflows/unit_and_int_tests.yaml)
+[![tests](https://github.com/ghga-de/purge-controller-service/actions/workflows/tests.yaml/badge.svg)](https://github.com/ghga-de/purge-controller-service/actions/workflows/tests.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/ghga-de/purge-controller-service/badge.svg?branch=main)](https://coveralls.io/github/ghga-de/purge-controller-service?branch=main)
 
 # Purge Controller Service
