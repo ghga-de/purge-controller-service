@@ -60,7 +60,7 @@ async def joint_fixture(
     config = get_config(sources=[kafka_fixture.config, token_hash_config])
 
     async with prepare_core(config=config) as file_deletion:
-        async with prepare_rest_app(config=config, core_overwrite=file_deletion) as app:
+        async with prepare_rest_app(config=config, core_override=file_deletion) as app:
             async with AsyncTestClient(app=app) as rest_client:
                 yield JointFixture(
                     config=config,
