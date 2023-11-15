@@ -20,7 +20,8 @@ import json
 
 from ghga_event_schemas import pydantic_ as event_schemas
 from hexkit.protocols.eventpub import EventPublisherProtocol
-from pydantic import BaseSettings, Field
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 from pcs.ports.outbound.event_pub import EventPublisherPort
 
@@ -31,12 +32,12 @@ class EventPubTranslatorConfig(BaseSettings):
     files_to_delete_topic: str = Field(
         ...,
         description="The name of the topic to receive events informing about files to delete.",
-        example="file_deletions",
+        examples=["file_deletions"],
     )
     files_to_delete_type: str = Field(
         ...,
         description="The type used for events informing about a file to be deleted.",
-        example="file_deletion_requested",
+        examples=["file_deletion_requested"],
     )
 
 

@@ -1,5 +1,5 @@
 
-[![tests](https://github.com/ghga-de/purge-controller-service/actions/workflows/unit_and_int_tests.yaml/badge.svg)](https://github.com/ghga-de/purge-controller-service/actions/workflows/unit_and_int_tests.yaml)
+[![tests](https://github.com/ghga-de/purge-controller-service/actions/workflows/tests.yaml/badge.svg)](https://github.com/ghga-de/purge-controller-service/actions/workflows/tests.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/ghga-de/purge-controller-service/badge.svg?branch=main)](https://coveralls.io/github/ghga-de/purge-controller-service?branch=main)
 
 # Purge Controller Service
@@ -27,17 +27,18 @@ It contains the file_id of the file that should be deleted.
 
 
 ## Installation
+
 We recommend using the provided Docker container.
 
 A pre-build version is available at [docker hub](https://hub.docker.com/repository/docker/ghga/purge-controller-service):
 ```bash
-docker pull ghga/purge-controller-service:0.2.1
+docker pull ghga/purge-controller-service:1.0.0
 ```
 
 Or you can build the container yourself from the [`./Dockerfile`](./Dockerfile):
 ```bash
 # Execute in the repo's root dir:
-docker build -t ghga/purge-controller-service:0.2.1 .
+docker build -t ghga/purge-controller-service:1.0.0 .
 ```
 
 For production-ready deployment, we recommend using Kubernetes, however,
@@ -45,7 +46,7 @@ for simple use cases, you could execute the service using docker
 on a single server:
 ```bash
 # The entrypoint is preconfigured:
-docker run -p 8080:8080 ghga/purge-controller-service:0.2.1 --help
+docker run -p 8080:8080 ghga/purge-controller-service:1.0.0 --help
 ```
 
 If you prefer not to use containers, you may install the service from source:
@@ -58,20 +59,59 @@ pcs --help
 ```
 
 ## Configuration
+
 ### Parameters
 
 The service requires the following configuration parameters:
+- **`token_hashes`** *(array)*: List of token hashes corresponding to the tokens that can be used to authenticate calls to this service.
+
+  - **Items** *(string)*
+
 - **`files_to_delete_topic`** *(string)*: The name of the topic to receive events informing about files to delete.
 
+
+  Examples:
+
+  ```json
+  "file_deletions"
+  ```
+
+
 - **`files_to_delete_type`** *(string)*: The type used for events informing about a file to be deleted.
+
+
+  Examples:
+
+  ```json
+  "file_deletion_requested"
+  ```
+
 
 - **`service_name`** *(string)*: Default: `"pcs"`.
 
 - **`service_instance_id`** *(string)*: A string that uniquely identifies this instance across all instances of this service. A globally unique Kafka client ID will be created by concatenating the service_name and the service_instance_id.
 
+
+  Examples:
+
+  ```json
+  "germany-bw-instance-001"
+  ```
+
+
 - **`kafka_servers`** *(array)*: A list of connection strings to connect to Kafka bootstrap servers.
 
   - **Items** *(string)*
+
+
+  Examples:
+
+  ```json
+  [
+      "localhost:9092"
+  ]
+  ```
+
 
 - **`host`** *(string)*: IP of the host. Default: `"127.0.0.1"`.
 
@@ -89,23 +129,83 @@ The service requires the following configuration parameters:
 
 - **`docs_url`** *(string)*: Path to host the swagger documentation. This is relative to the specified host and port. Default: `"/docs"`.
 
-- **`cors_allowed_origins`** *(array)*: A list of origins that should be permitted to make cross-origin requests. By default, cross-origin requests are not allowed. You can use ['*'] to allow any origin.
+- **`cors_allowed_origins`**: A list of origins that should be permitted to make cross-origin requests. By default, cross-origin requests are not allowed. You can use ['*'] to allow any origin. Default: `null`.
 
-  - **Items** *(string)*
+  - **Any of**
 
-- **`cors_allow_credentials`** *(boolean)*: Indicate that cookies should be supported for cross-origin requests. Defaults to False. Also, cors_allowed_origins cannot be set to ['*'] for credentials to be allowed. The origins must be explicitly specified.
+    - *array*
 
-- **`cors_allowed_methods`** *(array)*: A list of HTTP methods that should be allowed for cross-origin requests. Defaults to ['GET']. You can use ['*'] to allow all standard methods.
+      - **Items** *(string)*
 
-  - **Items** *(string)*
+    - *null*
 
-- **`cors_allowed_headers`** *(array)*: A list of HTTP request headers that should be supported for cross-origin requests. Defaults to []. You can use ['*'] to allow all headers. The Accept, Accept-Language, Content-Language and Content-Type headers are always allowed for CORS requests.
 
-  - **Items** *(string)*
+  Examples:
 
-- **`token_hashes`** *(array)*: List of token hashes corresponding to the tokens that can be used to authenticate calls to this service.
+  ```json
+  [
+      "https://example.org",
+      "https://www.example.org"
+  ]
+  ```
 
-  - **Items** *(string)*
+
+- **`cors_allow_credentials`**: Indicate that cookies should be supported for cross-origin requests. Defaults to False. Also, cors_allowed_origins cannot be set to ['*'] for credentials to be allowed. The origins must be explicitly specified. Default: `null`.
+
+  - **Any of**
+
+    - *boolean*
+
+    - *null*
+
+
+  Examples:
+
+  ```json
+  [
+      "https://example.org",
+      "https://www.example.org"
+  ]
+  ```
+
+
+- **`cors_allowed_methods`**: A list of HTTP methods that should be allowed for cross-origin requests. Defaults to ['GET']. You can use ['*'] to allow all standard methods. Default: `null`.
+
+  - **Any of**
+
+    - *array*
+
+      - **Items** *(string)*
+
+    - *null*
+
+
+  Examples:
+
+  ```json
+  [
+      "*"
+  ]
+  ```
+
+
+- **`cors_allowed_headers`**: A list of HTTP request headers that should be supported for cross-origin requests. Defaults to []. You can use ['*'] to allow all headers. The Accept, Accept-Language, Content-Language and Content-Type headers are always allowed for CORS requests. Default: `null`.
+
+  - **Any of**
+
+    - *array*
+
+      - **Items** *(string)*
+
+    - *null*
+
+
+  Examples:
+
+  ```json
+  []
+  ```
+
 
 
 ### Usage:
@@ -146,19 +246,20 @@ It uses protocol/provider pairs and dependency injection mechanisms provided by 
 
 
 ## Development
+
 For setting up the development environment, we rely on the
-[devcontainer feature](https://code.visualstudio.com/docs/remote/containers) of vscode
+[devcontainer feature](https://code.visualstudio.com/docs/remote/containers) of VS Code
 in combination with Docker Compose.
 
-To use it, you have to have Docker Compose as well as vscode with its "Remote - Containers"
+To use it, you have to have Docker Compose as well as VS Code with its "Remote - Containers"
 extension (`ms-vscode-remote.remote-containers`) installed.
-Then open this repository in vscode and run the command
-`Remote-Containers: Reopen in Container` from the vscode "Command Palette".
+Then open this repository in VS Code and run the command
+`Remote-Containers: Reopen in Container` from the VS Code "Command Palette".
 
 This will give you a full-fledged, pre-configured development environment including:
 - infrastructural dependencies of the service (databases, etc.)
-- all relevant vscode extensions pre-installed
-- pre-configured linting and auto-formating
+- all relevant VS Code extensions pre-installed
+- pre-configured linting and auto-formatting
 - a pre-configured debugger
 - automatic license-header insertion
 
@@ -170,9 +271,11 @@ if you update dependencies in the [`./pyproject.toml`](./pyproject.toml) or the
 [`./requirements-dev.txt`](./requirements-dev.txt), please run it again.
 
 ## License
+
 This repository is free to use and modify according to the
 [Apache 2.0 License](./LICENSE).
 
-## Readme Generation
-This readme is autogenerate, please see [`readme_generation.md`](./readme_generation.md)
+## README Generation
+
+This README file is auto-generated, please see [`readme_generation.md`](./readme_generation.md)
 for details.

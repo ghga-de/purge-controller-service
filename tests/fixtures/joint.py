@@ -23,11 +23,11 @@ import pytest_asyncio
 from ghga_service_commons.api.testing import AsyncTestClient
 from ghga_service_commons.utils.simple_token import generate_token_and_hash
 from hexkit.providers.akafka.testutils import KafkaFixture, kafka_fixture
-from pydantic import BaseSettings
 
+from pcs.adapters.inbound.fastapi_.config import TokenHashConfig
 from pcs.config import Config
-from pcs.container import Container
-from pcs.main import get_configured_container, get_rest_api
+from pcs.inject import prepare_core, prepare_rest_app
+from pcs.ports.inbound.file_deletion import FileDeletionPort
 from tests.fixtures.config import get_config
 
 __all__ = [
@@ -42,7 +42,7 @@ class JointFixture:
     """Returned by the `joint_fixture`."""
 
     config: Config
-    container: Container
+    file_deletion: FileDeletionPort
     rest_client: httpx.AsyncClient
     kafka: KafkaFixture
     token: str
@@ -55,27 +55,17 @@ async def joint_fixture(
     """A fixture that embeds all other fixtures for API-level integration testing"""
     token, hash = generate_token_and_hash()
 
-    class TokenConfig(BaseSettings):
-        token_hashes = [hash]
+    token_hash_config = TokenHashConfig(token_hashes=[hash])
 
-    config = get_config(sources=[kafka_fixture.config, TokenConfig()])
+    config = get_config(sources=[kafka_fixture.config, token_hash_config])
 
-    # create a DI container instance:translators
-    async with get_configured_container(config=config) as container:
-        container.wire(
-            modules=[
-                "pcs.adapters.inbound.fastapi_.http_authorization",
-                "pcs.adapters.inbound.fastapi_.routes",
-            ]
-        )
-
-        api = get_rest_api(config=config)
-        # setup an API test client:
-        async with AsyncTestClient(app=api) as rest_client:
-            yield JointFixture(
-                config=config,
-                container=container,
-                kafka=kafka_fixture,
-                rest_client=rest_client,
-                token=token,
-            )
+    async with prepare_core(config=config) as file_deletion:
+        async with prepare_rest_app(config=config, core_override=file_deletion) as app:
+            async with AsyncTestClient(app=app) as rest_client:
+                yield JointFixture(
+                    config=config,
+                    file_deletion=file_deletion,
+                    rest_client=rest_client,
+                    kafka=kafka_fixture,
+                    token=token,
+                )

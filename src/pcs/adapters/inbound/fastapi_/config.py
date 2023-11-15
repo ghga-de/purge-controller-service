@@ -12,31 +12,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-"""Test config"""
+"""REST API specific config."""
 
-from pathlib import Path
-from typing import Optional
-
+from pydantic import Field
 from pydantic_settings import BaseSettings
 
-from pcs.config import Config
-from tests.fixtures.utils import BASE_DIR
 
-TEST_CONFIG_YAML = BASE_DIR / "test_config.yaml"
+class TokenHashConfig(BaseSettings):
+    """Config model containing a list of token hashes."""
 
-
-def get_config(
-    sources: Optional[list[BaseSettings]] = None,
-    default_config_yaml: Path = TEST_CONFIG_YAML,
-) -> Config:
-    """Merges parameters from the default TEST_CONFIG_YAML with params inferred
-    from testcontainers.
-    """
-    sources_dict: dict[str, object] = {}
-
-    if sources is not None:
-        for source in sources:
-            sources_dict.update(**source.model_dump())
-
-    return Config(config_yaml=default_config_yaml, **sources_dict)  # type: ignore
+    token_hashes: list[str] = Field(
+        ...,
+        description="List of token hashes corresponding to the tokens that can be used "
+        + "to authenticate calls to this service.",
+    )

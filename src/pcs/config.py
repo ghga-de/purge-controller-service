@@ -18,8 +18,8 @@
 from ghga_service_commons.api import ApiConfigBase
 from hexkit.config import config_from_yaml
 from hexkit.providers.akafka import KafkaConfig
-from pydantic import Field
 
+from pcs.adapters.inbound.fastapi_.config import TokenHashConfig
 from pcs.adapters.outbound.event_pub import EventPubTranslatorConfig
 
 
@@ -28,12 +28,8 @@ class Config(
     ApiConfigBase,
     KafkaConfig,
     EventPubTranslatorConfig,
+    TokenHashConfig,
 ):
     """Config parameters and their defaults."""
 
     service_name: str = "pcs"
-    token_hashes: list[str] = Field(
-        ...,
-        description="List of token hashes corresponding to the tokens that can be used "
-        + "to authenticate calls to this service.",
-    )
