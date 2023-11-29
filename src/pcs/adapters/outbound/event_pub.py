@@ -55,10 +55,8 @@ class EventPubTranslator(EventPublisherPort):
 
     async def delete_file(self, *, file_id: str) -> None:
         """Communicate the event that a file needs to be deleted."""
-        payload = event_schemas.FileDeletionRequested(
-            file_id=file_id,
-        )
-        payload_dict = json.loads(payload.json())
+        payload = event_schemas.FileDeletionRequested(file_id=file_id)
+        payload_dict = json.loads(payload.model_dump_json())
 
         await self._provider.publish(
             payload=payload_dict,

@@ -18,25 +18,13 @@ from typing import Annotated
 
 from fastapi import APIRouter, status
 
-from pcs.adapters.inbound.fastapi_ import dummies, http_exceptions
+from pcs.adapters.inbound.fastapi_ import dummies
 from pcs.adapters.inbound.fastapi_.http_authorization import (
     TokenAuthContext,
     require_token,
 )
 
 router = APIRouter()
-
-
-RESPONSES = {
-    "authorizationFailedError": {
-        "description": (
-            "Bearer token could not be validated."
-            + "\nExceptions by ID:"
-            + "\n- authorizationFailedError: Bearer token could not be validated."
-        ),
-        "model": http_exceptions.HttpAuthorizationFailedError.get_body_model(),
-    },
-}
 
 
 @router.get(
@@ -57,9 +45,6 @@ async def health():
     tags=["PurgeControllerService"],
     status_code=status.HTTP_202_ACCEPTED,
     response_description="Commissioned file deletion",
-    responses={
-        status.HTTP_403_FORBIDDEN: RESPONSES["authorizationFailedError"],
-    },
 )
 async def delete_file(
     file_id: str,
@@ -67,9 +52,6 @@ async def delete_file(
     _token: Annotated[TokenAuthContext, require_token],
 ):
     """Send out an event to delete the file with the given id."""
-    # Need to introduce authentication here
-    # raise http_exceptions.HttpAuthorizationFailedError()
-
     # Perform file deletion
     await file_deletion.delete_file(file_id=file_id)
 

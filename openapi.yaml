@@ -9,30 +9,6 @@ components:
           type: array
       title: HTTPValidationError
       type: object
-    HttpAuthorizationFailedError:
-      additionalProperties: false
-      properties:
-        data:
-          $ref: '#/components/schemas/HttpAuthorizationFailedErrorData'
-        description:
-          description: A human readable message to the client explaining the cause
-            of the exception.
-          title: Description
-          type: string
-        exception_id:
-          const: authorizationFailedError
-          title: Exception Id
-      required:
-      - data
-      - description
-      - exception_id
-      title: HttpAuthorizationFailedError
-      type: object
-    HttpAuthorizationFailedErrorData:
-      additionalProperties: true
-      properties: {}
-      title: HttpAuthorizationFailedErrorData
-      type: object
     ValidationError:
       properties:
         loc:
@@ -62,7 +38,7 @@ info:
   description: A service exposing an external API to commission file deletionsfrom
     the wholefile backend.
   title: Purge Controller Service
-  version: 1.0.0
+  version: 1.1.0
 openapi: 3.1.0
 paths:
   /files/{file_id}:
@@ -82,16 +58,6 @@ paths:
             application/json:
               schema: {}
           description: Commissioned file deletion
-        '403':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HttpAuthorizationFailedError'
-          description: 'Bearer token could not be validated.
-
-            Exceptions by ID:
-
-            - authorizationFailedError: Bearer token could not be validated.'
         '422':
           content:
             application/json:
