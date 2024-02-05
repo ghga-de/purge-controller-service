@@ -17,19 +17,23 @@
 
 from ghga_service_commons.api import ApiConfigBase
 from hexkit.config import config_from_yaml
+from hexkit.log import LoggingConfig
 from hexkit.providers.akafka import KafkaConfig
 
 from pcs.adapters.inbound.fastapi_.config import TokenHashConfig
 from pcs.adapters.outbound.event_pub import EventPubTranslatorConfig
 
+SERVICE_NAME = "pcs"
 
-@config_from_yaml(prefix="pcs")
+
+@config_from_yaml(prefix=SERVICE_NAME)
 class Config(
     ApiConfigBase,
     KafkaConfig,
     EventPubTranslatorConfig,
     TokenHashConfig,
+    LoggingConfig,
 ):
     """Config parameters and their defaults."""
 
-    service_name: str = "pcs"
+    service_name: str = SERVICE_NAME
