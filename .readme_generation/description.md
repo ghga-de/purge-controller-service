@@ -1,5 +1,3 @@
-<!-- Please provide a short overview of the features of this service.-->
-
 This service exposes an external API to commission file deletions from the whole
 file backend.
 
