@@ -38,7 +38,7 @@ text = "Apache 2.0"
 Repository = "https://github.com/ghga-de/pcs"
 
 [project.scripts]
-pcs = "pcs.__main__:run"
+pcs = "pcs.__main__:cli"
 
 [tool.setuptools.packages.find]
 where = [
